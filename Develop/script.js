@@ -17,12 +17,52 @@ function generatePassword () {
   const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
   const specialChars = ['!', '"', '#', '$', '%', '&', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~'];
 
-  for (x = 0; x < passwordLength; x++) {
-    
+  // Array that holds password characters
+  var passwordList = [];
+
+  // Function to generate random character from character arrays
+  function randomChar (list) {
+    return list[Math.floor(Math.random() * list.length)];
   }
+
+  var selectors = 0;
+
+  if (useLowercase) {
+    selectors += 1;
+  }
+
+  if (useUppercase) {
+    selectors += 1;
+  }
+
+  if (useNumbers) {
+    selectors += 1;
+  }
+
+  if (useSpecialChars) {
+    selectors += 1;
+  }
+
+  for (x = 0; x < (passwordLength / selectors); x++) {
+    if (useLowercase) {
+      passwordList.push(randomChar(lowercaseChars));
+    }
+    if (useUppercase) {
+      passwordList.push(randomChar(uppercaseChars));
+    }
+    if (useNumbers) {
+      passwordList.push(randomChar(numbers));
+    }
+    if (useSpecialChars) {
+      passwordList.push(randomChar(specialChars));
+    } 
+  }
+  
+  
+
+  return passwordList.join('');
+
 }
-
-
 
 // Write password to the #password input
 function writePassword() {
