@@ -4,18 +4,36 @@ var generateBtn = document.querySelector("#generate");
 // Generate Password
 
 function generatePassword () {
-  // Prompts to determine password criteria
-  var passwordLength = window.prompt("How long do you need the password to be? 8-128 Characters.");
-  var useLowercase = window.confirm("Would you like lowercase characters in your password?");
-  var useUppercase = window.confirm("Would you like uppercase characters in your password?");
-  var useNumbers = window.confirm("Would you like numbers in your password?");
-  var useSpecialChars = window.confirm("Would you like special characters in your password?");
-
+  
   // Arrays to pull password characters from
   const lowercaseChars = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
   const uppercaseChars = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
   const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-  const specialChars = ['!', '"', '#', '$', '%', '&', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~'];
+  const specialChars = ['!','"','#','$','%','&','(',')','*','+',',','-','.','/',':',';','<','=','>','?','@','[',']','^','_','`','{','|','}','~'];
+  
+  
+  // Prompts to determine password criteria
+  var passwordLength = window.prompt("How long do you need the password to be? 8-128 Characters.");
+  
+  // if statement to verify number of characters in password length
+  if (passwordLength < 8 || passwordLength > 128) {
+    window.alert("Please select a length between 8 and 128 characters");
+    generatePassword();
+  }
+
+  // need to validate characters entered are numbers (this doesn't work)
+  for (x = 0; x < passwordLength.length; x++) {
+    if (passwordLength.charAt(x).match(numbers)) {
+      var useLowercase = window.confirm("Would you like lowercase characters in your password?");
+      var useUppercase = window.confirm("Would you like uppercase characters in your password?");
+      var useNumbers = window.confirm("Would you like numbers in your password?");
+      var useSpecialChars = window.confirm("Would you like special characters in your password?");
+    } else {
+      window.alert("Please enter a number");
+      generatePassword();
+    }
+  }
+
 
   // Array that holds password characters
   var passwordList = [];
@@ -25,6 +43,9 @@ function generatePassword () {
     return list[Math.floor(Math.random() * list.length)];
   }
 
+  
+
+  // Selectors represent how many of the options have been chosen
   var selectors = 0;
 
   if (useLowercase) {
@@ -42,8 +63,9 @@ function generatePassword () {
   if (useSpecialChars) {
     selectors += 1;
   }
-
-  for (x = 0; x < (passwordLength / selectors); x++) {
+  /* This for loop takes the requested password length and divides it by the number of selectors
+  chosen, it then generates one character from each catagory during one loop*/
+  for (x = 0; x < (Math.floor(passwordLength / selectors)); x++) {
     if (useLowercase) {
       passwordList.push(randomChar(lowercaseChars));
     }
@@ -57,8 +79,23 @@ function generatePassword () {
       passwordList.push(randomChar(specialChars));
     } 
   }
-  
-  
+  // If the number chosen for the password length is not evenly divisible by the number of selectors
+  // chosen, then this If/For loop will determine if additional characters need to be added.
+  if (passwordList.length < passwordLength) {
+    var charDiff = (passwordLength - passwordList.length)
+    
+    for (x = 0; x < charDiff; x++) {
+      if (useLowercase) {
+        passwordList.push(randomChar(lowercaseChars));
+      } else if (useUppercase) {
+        passwordList.push(randomChar(uppercaseChars));
+      } else if (useNumbers) {
+        passwordList.push(randomChar(numbers));
+      } else {
+        passwordList.push(randomChar(specialChars));
+      }
+    }
+  }
 
   return passwordList.join('');
 
