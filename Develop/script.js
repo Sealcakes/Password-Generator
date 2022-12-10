@@ -15,6 +15,11 @@ function generatePassword () {
   // Prompts to determine password criteria
   var passwordLength = window.prompt("How long do you need the password to be? 8-128 Characters.");
   
+  // If user cancels the password length prompt, it closes the window
+  if (!passwordLength) {
+    return;
+  }
+
   // if statement to verify number of characters in password length
   if (passwordLength < 8 || passwordLength > 128) {
     window.alert("Please select a length between 8 and 128 characters");
@@ -43,6 +48,11 @@ function generatePassword () {
     var useSpecialChars = window.confirm("Would you like special characters in your password?");
   }
 
+  // Validate that password requirements are selected
+  if (!useLowercase && !useUppercase && !useNumbers && !useSpecialChars) {
+    alert("No password requirements selected");
+    return;
+  }
 
   // Array that holds password characters
   var passwordList = [];
