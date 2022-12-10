@@ -21,17 +21,26 @@ function generatePassword () {
     generatePassword();
   }
 
-  // need to validate characters entered are numbers (this doesn't work)
+  // Checks to see if any spaces were input
   for (x = 0; x < passwordLength.length; x++) {
-    if (passwordLength.charAt(x).match(numbers)) {
-      var useLowercase = window.confirm("Would you like lowercase characters in your password?");
-      var useUppercase = window.confirm("Would you like uppercase characters in your password?");
-      var useNumbers = window.confirm("Would you like numbers in your password?");
-      var useSpecialChars = window.confirm("Would you like special characters in your password?");
-    } else {
-      window.alert("Please enter a number");
+    if (passwordLength.charAt(x) === " ") {
+      alert("Please enter numbers only")
       generatePassword();
     }
+  }
+
+  // Changes passwordLength variable from a string to number
+  passwordLength = parseInt(passwordLength);
+
+  // Checks to see if input is numbers only
+  if (isNaN(passwordLength)) {
+    alert("Please enter numbers only");
+    generatePassword();
+  } else {
+    var useLowercase = window.confirm("Would you like lowercase characters in your password?");
+    var useUppercase = window.confirm("Would you like uppercase characters in your password?");
+    var useNumbers = window.confirm("Would you like numbers in your password?");
+    var useSpecialChars = window.confirm("Would you like special characters in your password?");
   }
 
 
